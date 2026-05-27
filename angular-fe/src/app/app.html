@@ -1,0 +1,375 @@
+<main class="app-main-wrapper">
+  <!-- Interactive Dashboard Background Elements -->
+  <div class="bg-glow bg-glow-purple"></div>
+  <div class="bg-glow bg-glow-blue"></div>
+
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>FlexForm</h1>
+          <span class="logo-subtitle">Dynamic Flow Engine</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button type="button" class="btn-theme-toggle" (click)="toggleTheme()" [title]="isLightTheme ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+          <!-- Sun Icon (shows when dark mode active) -->
+          <svg *ngIf="!isLightTheme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon (shows when light mode active) -->
+          <svg *ngIf="isLightTheme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+        <div class="header-badge">
+          <span class="live-pulse"></span>
+          <span class="badge-text">Secure Mock-Backend API Online</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- SCHEMA ENGINE LOADED VIEW -->
+    <div class="dashboard-content-wrapper" *ngIf="profiles; else loadingSchema">
+      
+      <!-- VIEW 1: PROFILES DIRECTORY DASHBOARD -->
+      <ng-container *ngIf="currentView === 'dashboard'">
+        <div class="glass-dashboard-card animate-pop">
+          <div class="dashboard-card-header">
+            <div class="header-titles">
+              <h2>Profile Registry</h2>
+              <p>Manage secure registered identities configured with distinct verification schemas.</p>
+            </div>
+            
+            <div class="create-profile-wrapper">
+              <button type="button" class="btn btn-primary create-profile-trigger" (click)="toggleCreateMenu()">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Create Profile
+              </button>
+              
+              <!-- Dynamic schemas selection dropdown menu -->
+              <div class="create-flow-dropdown animate-pop" *ngIf="showCreateMenu">
+                <div class="dropdown-header">Select Verification Flow</div>
+                <div class="dropdown-list">
+                  <button 
+                    *ngFor="let schema of availableSchemas" 
+                    type="button" 
+                    class="dropdown-item" 
+                    (click)="startNewProfile(schema.id)"
+                  >
+                    <span class="item-label">{{ schema.label }}</span>
+                    <svg class="dropdown-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profiles Grid/List -->
+          <div class="profiles-table-container">
+            <table class="profiles-table" *ngIf="profiles.length > 0; else noProfiles">
+              <thead>
+                <tr>
+                  <th>Display Name</th>
+                  <th>Email Address</th>
+                  <th>Username</th>
+                  <th>Schema Type</th>
+                  <th>Registry Meta</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let profile of profiles" class="profile-row">
+                  <td>
+                    <div class="profile-user-cell">
+                      <div class="user-avatar" [class.avatar-pro]="profile.schemaRef === 'form-schema-2.json'">
+                        {{ getProfileDisplayName(profile).substring(0, 2).toUpperCase() }}
+                      </div>
+                      <span class="user-name-text">{{ getProfileDisplayName(profile) }}</span>
+                    </div>
+                  </td>
+                  <td><span class="user-email-text">{{ getProfileEmail(profile) }}</span></td>
+                  <td>
+                    <span class="user-username-badge">&#64;{{ getProfileUsername(profile) }}</span>
+                  </td>
+                  <td>
+                    <span class="user-schema-badge" [class.schema-pro]="profile.schemaRef === 'form-schema-2.json'">
+                      {{ getSchemaLabel(profile.schemaRef) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="registry-meta-cell">
+                      <span class="user-experience-badge" [attr.data-exp]="profile.data['step-2']?.experience">
+                        {{ getProfileExperienceLabel(profile) }}
+                      </span>
+                      <span class="profile-timestamp" *ngIf="profile.timestamp">
+                        Saved: {{ formatTimestamp(profile.timestamp) }}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="text-right">
+                    <div class="actions-group">
+                      <!-- Edit Button -->
+                      <button 
+                        type="button" 
+                        class="btn-action btn-edit" 
+                        title="Edit Profile"
+                        (click)="editProfile(profile)"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                      </button>
+                      <!-- Delete Button -->
+                      <button 
+                        type="button" 
+                        class="btn-action btn-delete" 
+                        title="Delete Profile"
+                        (click)="deleteProfile(profile.id)"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- No Profiles State -->
+            <ng-template #noProfiles>
+              <div class="no-profiles-placeholder">
+                <div class="empty-icon-circle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 010 7.75"></path>
+                  </svg>
+                </div>
+                <h3>No Registered Profiles</h3>
+                <p>The registry database is empty. Choose a dynamic onboarding flow to register a secure identity profile.</p>
+                <div class="empty-create-buttons">
+                  <button 
+                    *ngFor="let schema of availableSchemas; let first = first" 
+                    type="button" 
+                    class="btn" 
+                    [class.btn-primary]="!first" 
+                    [class.btn-secondary]="first"
+                    (click)="startNewProfile(schema.id)"
+                  >
+                    {{ schema.label }}
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- VIEW 2: MULTI-STEP DYNAMIC ONBOARDING FORM -->
+      <ng-container *ngIf="currentView === 'form'">
+        <div class="dashboard-content animate-pop" *ngIf="schema">
+          <!-- Stepper Progress Tracker -->
+          <app-stepper 
+            [steps]="schema.steps" 
+            [currentStepIndex]="currentStepIndex"
+            [statuses]="stepStatuses"
+            (stepClick)="onStepClick($event)"
+          ></app-stepper>
+
+          <!-- Central Form and Submission Card -->
+          <div class="glass-form-card">
+            
+            <!-- Case 1: Form Filling in Progress -->
+            <ng-container *ngIf="!isSubmitted; else successScreen">
+              
+              <div class="card-header-details">
+                <div class="flex-header-row">
+                  <div class="header-titles">
+                    <div class="step-badge-indicator">
+                      <span class="schema-badge" [class.schema-pro]="activeSchemaRef === 'form-schema-2.json'">
+                        {{ getSchemaLabel(activeSchemaRef) }} Engine
+                      </span>
+                    </div>
+                    <h2 class="card-step-title">{{ currentStep?.title }}</h2>
+                    <p class="card-step-desc">{{ currentStep?.description }}</p>
+                  </div>
+                  <button type="button" class="btn btn-secondary exit-form-btn" (click)="exitToDashboard()">
+                    Cancel & Exit
+                  </button>
+                </div>
+              </div>
+
+              <!-- Dynamic Form Renderer Component -->
+              <div class="form-renderer-body" *ngIf="currentStep && currentStepGroup">
+                <app-dynamic-form
+                  [step]="currentStep"
+                  [formGroup]="currentStepGroup"
+                  [backendErrors]="backendErrors[currentStep.id]"
+                  (clearBackendError)="onClearBackendError($event)"
+                ></app-dynamic-form>
+              </div>
+
+              <!-- Card Action Control Panel -->
+              <div class="card-footer-controls">
+                <!-- Back Button -->
+                <button 
+                  type="button" 
+                  class="btn btn-secondary" 
+                  [disabled]="currentStepIndex === 0 || isValidating"
+                  (click)="onPrevStep()"
+                  *ngIf="currentStepIndex > 0"
+                >
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                  Previous
+                </button>
+
+                <div class="flex-spacer"></div>
+
+                <!-- Next / Submit Button -->
+                <ng-container *ngIf="schema && currentStepIndex === schema.steps.length - 1; else nextBtn">
+                  <button 
+                    type="button" 
+                    class="btn btn-submit"
+                    [disabled]="isValidating"
+                    (click)="onSubmitForm()"
+                  >
+                    <span class="btn-content" *ngIf="!isValidating">
+                      {{ editingProfileId ? 'Verify & Update' : 'Verify & Complete' }}
+                      <svg class="btn-icon right-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    
+                    <span class="btn-content loading" *ngIf="isValidating">
+                      <svg class="btn-spinner" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3"></circle>
+                      </svg>
+                      Verifying Profile...
+                    </span>
+                  </button>
+                </ng-container>
+
+                <ng-template #nextBtn>
+                  <button 
+                    type="button" 
+                    class="btn btn-primary"
+                    [disabled]="isValidating"
+                    (click)="onNextStep()"
+                  >
+                    <span class="btn-content" *ngIf="!isValidating">
+                      Next Step
+                      <svg class="btn-icon right-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </span>
+                    
+                    <span class="btn-content loading" *ngIf="isValidating">
+                      <svg class="btn-spinner" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3"></circle>
+                      </svg>
+                      Verifying Page...
+                    </span>
+                  </button>
+                </ng-template>
+              </div>
+
+              <!-- Loading Backdrop for Server Verification -->
+              <div class="card-loading-overlay" *ngIf="isValidating">
+                <div class="overlay-loader">
+                  <svg class="massive-spinner" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.5"></circle>
+                  </svg>
+                  <span class="overlay-text">Contacting Validation API</span>
+                  <p class="overlay-subtext">Executing static and dynamic check rulesets...</p>
+                </div>
+              </div>
+
+            </ng-container>
+
+            <!-- Case 2: Onboarding Successful! -->
+            <ng-template #successScreen>
+              <div class="success-screen-wrapper">
+                <div class="success-header">
+                  <div class="success-glow-circle animate-pop">
+                    <svg class="success-checkmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <h2 class="success-title">Verification Approved</h2>
+                  <p class="success-subtitle">The credentials passed all validation gates and server-side checks.</p>
+                </div>
+
+                <!-- Collected Data Summary Table -->
+                <div class="summary-table-container">
+                  <h3 class="summary-section-title">Verified Profile Parameters</h3>
+                  <div class="summary-grid">
+                    <div class="summary-row" *ngFor="let item of getSummaryData()">
+                      <span class="summary-label">{{ item.label }}</span>
+                      <span class="summary-value">{{ item.value }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="success-actions">
+                  <button type="button" class="btn btn-submit" (click)="onSaveProfile()">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    {{ editingProfileId ? 'Save Revisions & Exit' : 'Save New Profile & Exit' }}
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+
+    <!-- Loading state for JSON loading -->
+    <ng-template #loadingSchema>
+      <div class="schema-loading-container">
+        <svg class="massive-spinner" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"></circle>
+        </svg>
+        <span>Bootstrapping Schema Engine...</span>
+      </div>
+    </ng-template>
+
+    <!-- Footer Information -->
+    <footer class="dashboard-footer">
+      <p>Angular 19+ Dynamic Forms Hub &copy; 2026. Built with high-fidelity custom animations and static-dynamic verification gates.</p>
+    </footer>
+  </div>
+</main>

@@ -1,0 +1,277 @@
+{
+  "form-schema-1.json": {
+    "steps": [
+      {
+        "id": "step-1",
+        "title": "Personal Details",
+        "description": "Please provide your full name and primary email address.",
+        "backendValidation": {
+          "url": "/api/validate/step1-success.json",
+          "method": "POST"
+        },
+        "fields": [
+          {
+            "id": "firstName",
+            "label": "First Name",
+            "type": "text",
+            "placeholder": "Enter your first name",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "First name is required" },
+              { "type": "minLength", "value": 2, "message": "First name must be at least 2 characters long" }
+            ]
+          },
+          {
+            "id": "lastName",
+            "label": "Last Name",
+            "type": "text",
+            "placeholder": "Enter your last name",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Last name is required" }
+            ]
+          },
+          {
+            "id": "email",
+            "label": "Email Address",
+            "type": "email",
+            "placeholder": "Enter your email address",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Email address is required" },
+              { "type": "pattern", "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", "message": "Please enter a valid email address (e.g. name@domain.com)" }
+            ]
+          },
+          {
+            "id": "dob",
+            "label": "Date of Birth",
+            "type": "date",
+            "placeholder": "Select your date of birth",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Date of birth is required" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "step-2",
+        "title": "Account Profile",
+        "description": "Setup your login username and select your professional credentials.",
+        "backendValidation": {
+          "url": "/api/validate/step2-success.json",
+          "method": "POST"
+        },
+        "fields": [
+          {
+            "id": "username",
+            "label": "Username",
+            "type": "text",
+            "placeholder": "Choose a unique username",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Username is required" },
+              { "type": "minLength", "value": 5, "message": "Username must be at least 5 characters long" },
+              { "type": "pattern", "value": "^[a-zA-Z0-9_]+$", "message": "Username can only contain letters, numbers, and underscores" }
+            ]
+          },
+          {
+            "id": "experience",
+            "label": "Professional Experience",
+            "type": "select",
+            "placeholder": "Select your experience level",
+            "defaultValue": "",
+            "options": [
+              { "label": "Junior (0 - 2 years)", "value": "junior" },
+              { "label": "Intermediate (2 - 5 years)", "value": "intermediate" },
+              { "label": "Senior (5+ years)", "value": "senior" }
+            ],
+            "validations": [
+              { "type": "required", "message": "Please select your experience level" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "step-3",
+        "title": "Preferences & Consent",
+        "description": "Manage subscription settings and agree to terms to complete onboarding.",
+        "backendValidation": {
+          "url": "/api/validate/step3-success.json",
+          "method": "POST"
+        },
+        "fields": [
+          {
+            "id": "newsletter",
+            "label": "Subscribe to weekly engineering digests and news",
+            "type": "checkbox",
+            "defaultValue": false
+          },
+          {
+            "id": "terms",
+            "label": "I agree to the static & dynamic verification terms of service",
+            "type": "checkbox",
+            "defaultValue": false,
+            "validations": [
+              { "type": "requiredTrue", "message": "You must accept the terms of service to complete registration" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "form-schema-2.json": {
+    "steps": [
+      {
+        "id": "step-1",
+        "title": "Professional Details",
+        "description": "Please provide your full name, email, and phone contact.",
+        "backendValidation": {
+          "url": "/api/validate/step1-success.json",
+          "method": "POST"
+        },
+        "fields": [
+          {
+            "id": "firstName",
+            "label": "First Name",
+            "type": "text",
+            "placeholder": "Enter your first name",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "First name is required" },
+              { "type": "minLength", "value": 2, "message": "First name must be at least 2 characters long" }
+            ]
+          },
+          {
+            "id": "lastName",
+            "label": "Last Name",
+            "type": "text",
+            "placeholder": "Enter your last name",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Last name is required" }
+            ]
+          },
+          {
+            "id": "email",
+            "label": "Email Address",
+            "type": "email",
+            "placeholder": "Enter your email address",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Email address is required" },
+              { "type": "pattern", "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", "message": "Please enter a valid email address" }
+            ]
+          },
+          {
+            "id": "phone",
+            "label": "Phone Number",
+            "type": "text",
+            "placeholder": "e.g. +1 (555) 123-4567",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Phone contact is required for professional validation" },
+              { "type": "pattern", "value": "^\\+?[0-9\\s\\-\\(\\)]{7,20}$", "message": "Please enter a valid phone number (min 7 digits)" }
+            ]
+          },
+          {
+            "id": "dob",
+            "label": "Date of Birth",
+            "type": "date",
+            "placeholder": "Select your date of birth",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Date of birth is required" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "step-2",
+        "title": "Corporate Credentials",
+        "description": "Specify your organization, designated role, and chose a username.",
+        "backendValidation": {
+          "url": "/api/validate/step2-success.json",
+          "method": "POST"
+        },
+        "fields": [
+          {
+            "id": "username",
+            "label": "Username",
+            "type": "text",
+            "placeholder": "Choose a unique username",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Username is required" },
+              { "type": "minLength", "value": 5, "message": "Username must be at least 5 characters long" }
+            ]
+          },
+          {
+            "id": "company",
+            "label": "Organization / Company",
+            "type": "text",
+            "placeholder": "Enter your employer or company name",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "Company name is required" },
+              { "type": "minLength", "value": 2, "message": "Company name must be at least 2 characters long" }
+            ]
+          },
+          {
+            "id": "role",
+            "label": "Engineering Role",
+            "type": "select",
+            "placeholder": "Select your professional role",
+            "defaultValue": "",
+            "options": [
+              { "label": "Software Architect", "value": "architect" },
+              { "label": "Principal Engineer", "value": "principal" },
+              { "label": "Product Manager", "value": "pm" },
+              { "label": "UX Designer", "value": "designer" }
+            ],
+            "validations": [
+              { "type": "required", "message": "Please select your engineering role" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "step-3",
+        "title": "Developer profiles & Consent",
+        "description": "Connect professional accounts and agree to terms to complete registry onboarding.",
+        "backendValidation": {
+          "url": "/api/validate/step3-success.json",
+          "method": "POST"
+        },
+        "fields": [
+          {
+            "id": "github",
+            "label": "GitHub Username",
+            "type": "text",
+            "placeholder": "Enter your GitHub handle",
+            "defaultValue": "",
+            "validations": [
+              { "type": "required", "message": "GitHub account handle is required" },
+              { "type": "pattern", "value": "^[a-zA-Z0-9\\-]+$", "message": "GitHub username can only contain letters, numbers, and hyphens" }
+            ]
+          },
+          {
+            "id": "newsletter",
+            "label": "Subscribe to our daily principal engineering digests",
+            "type": "checkbox",
+            "defaultValue": false
+          },
+          {
+            "id": "terms",
+            "label": "I agree to the static & dynamic verification terms of service",
+            "type": "checkbox",
+            "defaultValue": false,
+            "validations": [
+              { "type": "requiredTrue", "message": "You must accept the terms of service to complete registration" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

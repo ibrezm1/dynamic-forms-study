@@ -1,0 +1,6 @@
+{
+  "success": false,
+  "errors": {
+    "username": "The username 'admin' is a reserved system identifier."
+  }
+}

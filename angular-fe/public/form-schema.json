@@ -1,0 +1,111 @@
+{
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Personal Details",
+      "description": "Please provide your full name and primary email address.",
+      "backendValidation": {
+        "url": "/api/validate/step1-error.json",
+        "method": "POST"
+      },
+      "fields": [
+        {
+          "id": "firstName",
+          "label": "First Name",
+          "type": "text",
+          "placeholder": "Enter your first name",
+          "defaultValue": "",
+          "validations": [
+            { "type": "required", "message": "First name is required" },
+            { "type": "minLength", "value": 2, "message": "First name must be at least 2 characters long" }
+          ]
+        },
+        {
+          "id": "lastName",
+          "label": "Last Name",
+          "type": "text",
+          "placeholder": "Enter your last name",
+          "defaultValue": "",
+          "validations": [
+            { "type": "required", "message": "Last name is required" }
+          ]
+        },
+        {
+          "id": "email",
+          "label": "Email Address",
+          "type": "email",
+          "placeholder": "Enter your email address",
+          "defaultValue": "",
+          "validations": [
+            { "type": "required", "message": "Email address is required" },
+            { "type": "pattern", "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", "message": "Please enter a valid email address (e.g. name@domain.com)" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "Account Profile",
+      "description": "Setup your login username and select your professional credentials.",
+      "backendValidation": {
+        "url": "/api/validate/step2-success.json",
+        "method": "POST"
+      },
+      "fields": [
+        {
+          "id": "username",
+          "label": "Username",
+          "type": "text",
+          "placeholder": "Choose a unique username",
+          "defaultValue": "",
+          "validations": [
+            { "type": "required", "message": "Username is required" },
+            { "type": "minLength", "value": 5, "message": "Username must be at least 5 characters long" },
+            { "type": "pattern", "value": "^[a-zA-Z0-9_]+$", "message": "Username can only contain letters, numbers, and underscores" }
+          ]
+        },
+        {
+          "id": "experience",
+          "label": "Professional Experience",
+          "type": "select",
+          "placeholder": "Select your experience level",
+          "defaultValue": "",
+          "options": [
+            { "label": "Junior (0 - 2 years)", "value": "junior" },
+            { "label": "Intermediate (2 - 5 years)", "value": "intermediate" },
+            { "label": "Senior (5+ years)", "value": "senior" }
+          ],
+          "validations": [
+            { "type": "required", "message": "Please select your experience level" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Preferences & Consent",
+      "description": "Manage subscription settings and agree to terms to complete onboarding.",
+      "backendValidation": {
+        "url": "/api/validate/step3-success.json",
+        "method": "POST"
+      },
+      "fields": [
+        {
+          "id": "newsletter",
+          "label": "Subscribe to weekly engineering digests and news",
+          "type": "checkbox",
+          "defaultValue": false
+        },
+        {
+          "id": "terms",
+          "label": "I agree to the static & dynamic verification terms of service",
+          "type": "checkbox",
+          "defaultValue": false,
+          "validations": [
+            { "type": "requiredTrue", "message": "You must accept the terms of service to complete registration" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "success": false,
+  "errors": {
+    "email": "This email address is already associated with an active account.",
+    "lastName": "First name and last name cannot be identical for security purposes."
+  }
+}

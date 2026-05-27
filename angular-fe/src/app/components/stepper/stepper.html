@@ -1,0 +1,56 @@
+<div class="stepper-container">
+  <div class="stepper-steps">
+    <div 
+      *ngFor="let step of steps; let i = index" 
+      class="step-item"
+      [class.active]="i === currentStepIndex"
+      [class.completed]="statuses[i] === 'completed'"
+      [class.error]="statuses[i] === 'error'"
+      [class.validating]="statuses[i] === 'validating'"
+      [class.clickable]="isClickable(i)"
+      (click)="onStepClick(i)"
+    >
+      <!-- Connecting Line -->
+      <div *ngIf="i > 0" class="step-line" [class.filled]="isLineFilled(i)"></div>
+
+      <div class="step-icon-wrapper">
+        <!-- Icon/Number Circle -->
+        <div class="step-circle" [attr.data-status]="statuses[i]">
+          <ng-container [ngSwitch]="statuses[i]">
+            
+            <!-- Validating (Loading Spinner) -->
+            <svg *ngSwitchCase="'validating'" class="spinner-svg" viewBox="0 0 24 24">
+              <circle class="spinner-path" cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3"></circle>
+            </svg>
+
+            <!-- Completed (Checkmark) -->
+            <svg *ngSwitchCase="'completed'" class="icon-svg check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+
+            <!-- Error (Warning Exclamation) -->
+            <svg *ngSwitchCase="'error'" class="icon-svg error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+
+            <!-- Pending or Active (Number) -->
+            <span *ngSwitchDefault class="step-number">{{ i + 1 }}</span>
+
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Step Information -->
+      <div class="step-content">
+        <h4 class="step-title">{{ step.title }}</h4>
+        <p class="step-desc">{{ step.description }}</p>
+        
+        <!-- Badges showing text description of status -->
+        <span class="status-badge" [attr.data-status]="statuses[i]">
+          {{ getStatusLabel(statuses[i]) }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

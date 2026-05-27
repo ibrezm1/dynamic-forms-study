@@ -1,0 +1,20 @@
+[
+  {
+    "id": "profile-1",
+    "schemaRef": "form-schema-1.json",
+    "data": {
+      "step-1": { "firstName": "Jonathan", "lastName": "Ives", "email": "jives@domain.com" },
+      "step-2": { "username": "j_ives", "experience": "senior" },
+      "step-3": { "newsletter": true, "terms": true }
+    }
+  },
+  {
+    "id": "profile-2",
+    "schemaRef": "form-schema-2.json",
+    "data": {
+      "step-1": { "firstName": "Marcus", "lastName": "Aurelius", "email": "marcus@domain.com", "phone": "+39 06 123456" },
+      "step-2": { "username": "philosopher", "company": "Roman Empire", "role": "architect" },
+      "step-3": { "github": "stoic-emperor", "newsletter": false, "terms": true }
+    }
+  }
+]

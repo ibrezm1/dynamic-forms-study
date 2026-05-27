@@ -1,0 +1,58 @@
+/* Core Design Token Variables - Dark Mode (Default) */
+:root {
+  --color-bg: #0b0b14;
+  --color-card-bg: rgba(22, 22, 35, 0.55);
+  --color-primary: #818cf8;
+  --color-accent: #6366f1;
+  --color-accent-glow: rgba(99, 102, 241, 0.35);
+  --color-success: #10b981;
+  --color-success-glow: rgba(16, 185, 129, 0.25);
+  --color-danger: #f87171;
+  --color-danger-glow: rgba(248, 113, 113, 0.2);
+  --color-warning: #fbbf24;
+  --color-text-main: #f3f4f6;
+  --color-text-muted: #9ca3af;
+  --color-text-title: #ffffff;
+  --color-card-border: rgba(255, 255, 255, 0.08);
+  --color-glass-bg: rgba(30, 30, 40, 0.6);
+  --color-input-bg: rgba(0, 0, 0, 0.2);
+  --color-table-header-bg: rgba(255, 255, 255, 0.02);
+  --color-table-row-hover: rgba(255, 255, 255, 0.015);
+  --border-glass: 1px solid rgba(255, 255, 255, 0.08);
+  --color-glow-blue: rgba(59, 130, 246, 0.15);
+  --color-glow-purple: rgba(168, 85, 247, 0.15);
+}
+
+/* Core Design Token Variables - Light Mode */
+:root.light-theme {
+  --color-bg: #f4f5f7;
+  --color-card-bg: rgba(255, 255, 255, 0.75);
+  --color-primary: #4f46e5;
+  --color-accent: #6366f1;
+  --color-accent-glow: rgba(99, 102, 241, 0.15);
+  --color-success: #059669;
+  --color-success-glow: rgba(5, 150, 105, 0.1);
+  --color-danger: #dc2626;
+  --color-danger-glow: rgba(220, 38, 38, 0.08);
+  --color-warning: #d97706;
+  --color-text-main: #1f2937;
+  --color-text-muted: #4b5563;
+  --color-text-title: #111827;
+  --color-card-border: rgba(0, 0, 0, 0.08);
+  --color-glass-bg: rgba(255, 255, 255, 0.45);
+  --color-input-bg: rgba(255, 255, 255, 0.9);
+  --color-table-header-bg: rgba(0, 0, 0, 0.03);
+  --color-table-row-hover: rgba(0, 0, 0, 0.02);
+  --border-glass: 1px solid rgba(0, 0, 0, 0.08);
+  --color-glow-blue: rgba(59, 130, 246, 0.05);
+  --color-glow-purple: rgba(168, 85, 247, 0.05);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

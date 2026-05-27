@@ -1,0 +1,64 @@
+<form [formGroup]="formGroup" class="dynamic-form-el" autocomplete="off">
+  <div *ngFor="let field of step.fields" class="form-group-item" [class.has-error]="hasError(field)">
+    <label [attr.for]="field.id" class="field-label">
+      {{ field.label }}
+      <span *ngIf="isRequired(field)" class="required-star">*</span>
+    </label>
+
+    <!-- Rendering based on field type -->
+    <ng-container [ngSwitch]="field.type">
+      
+      <!-- Select Box -->
+      <div *ngSwitchCase="'select'" class="select-wrapper">
+        <select 
+          [id]="field.id" 
+          [formControlName]="field.id" 
+          class="form-control select-control"
+        >
+          <option value="" disabled selected>{{ field.placeholder || 'Select an option' }}</option>
+          <option *ngFor="let opt of field.options" [value]="opt.value">{{ opt.label }}</option>
+        </select>
+        <div class="select-arrow"></div>
+      </div>
+
+      <!-- Checkbox -->
+      <div *ngSwitchCase="'checkbox'" class="checkbox-container">
+        <label class="checkbox-label-wrapper">
+          <input 
+            type="checkbox" 
+            [id]="field.id" 
+            [formControlName]="field.id" 
+            class="checkbox-input"
+          >
+          <span class="custom-checkbox">
+            <svg class="check-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+          <span class="checkbox-text">{{ field.label }}</span>
+        </label>
+      </div>
+
+      <!-- Default Text/Email inputs -->
+      <input 
+        *ngSwitchDefault 
+        [type]="field.type" 
+        [id]="field.id" 
+        [formControlName]="field.id" 
+        [placeholder]="field.placeholder || ''" 
+        class="form-control text-control"
+      >
+      
+    </ng-container>
+
+    <!-- Errors display -->
+    <div class="error-container" [class.visible]="hasError(field)">
+      <svg class="error-symbol-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span class="error-msg-text">{{ getErrorMessage(field) }}</span>
+    </div>
+  </div>
+</form>
