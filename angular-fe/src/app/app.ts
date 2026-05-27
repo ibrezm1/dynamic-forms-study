@@ -44,6 +44,9 @@ export class App implements OnInit {
   // Tracks light/dark layout state
   isLightTheme = false;
   
+  // Dynamic layout configuration loaded from backend layout.json
+  layoutConfig: any = null;
+  
   currentStepIndex = 0;
   stepStatuses: StepStatus[] = [];
   
@@ -64,6 +67,8 @@ export class App implements OnInit {
     this.loadProfiles();
     // Dynamically retrieve available onboarding flow schemas
     this.loadSchemas();
+    // Fetch central dynamic form layout configurations
+    this.loadLayoutConfig();
   }
 
   private async loadProfiles(): Promise<void> {
@@ -88,6 +93,18 @@ export class App implements OnInit {
       this.cdr.markForCheck();
     } catch (e) {
       console.error('Error fetching available schemas:', e);
+    }
+  }
+
+  private async loadLayoutConfig(): Promise<void> {
+    try {
+      const response = await fetch('/api/layout?t=' + Date.now());
+      if (response.ok) {
+        this.layoutConfig = await response.json();
+      }
+      this.cdr.markForCheck();
+    } catch (e) {
+      console.error('Error loading layout configuration:', e);
     }
   }
 
@@ -128,6 +145,13 @@ export class App implements OnInit {
     const step = this.currentStep;
     if (!this.formGroup || !step) return null;
     return this.formGroup.get(step.id) as FormGroup;
+  }
+
+  get currentStepLayout(): { [fieldId: string]: { width: number } } | null {
+    if (!this.layoutConfig || !this.activeSchemaRef || !this.currentStep) return null;
+    const schemaLayout = this.layoutConfig[this.activeSchemaRef];
+    if (!schemaLayout) return null;
+    return schemaLayout[this.currentStep.id] || null;
   }
 
   // Dashboard actions

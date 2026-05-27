@@ -1,5 +1,10 @@
 <form [formGroup]="formGroup" class="dynamic-form-el" autocomplete="off">
-  <div *ngFor="let field of step.fields" class="form-group-item" [class.has-error]="hasError(field)">
+  <div 
+    *ngFor="let field of step.fields" 
+    class="form-group-item" 
+    [class.has-error]="hasError(field)"
+    [ngStyle]="getFieldGridStyle(field)"
+  >
     <label [attr.for]="field.id" class="field-label">
       {{ field.label }}
       <span *ngIf="isRequired(field)" class="required-star">*</span>

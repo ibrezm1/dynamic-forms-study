@@ -139,6 +139,14 @@ app.get('/api/profiles', (req, res) => {
   res.sendFile(filePath);
 });
 
+// GET /api/layout - Serve dynamic form layout configuration with no cache
+app.get('/api/layout', (req, res) => {
+  const filePath = path.join(__dirname, 'data', 'layout.json');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.sendFile(filePath);
+});
+
+
 // GET /api/schemas - Serve the list of all available schemas dynamically with user-friendly labels
 app.get('/api/schemas', (req, res) => {
   const filePath = path.join(__dirname, 'data', 'schemas.json');

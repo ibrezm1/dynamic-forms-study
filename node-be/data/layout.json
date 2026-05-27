@@ -1,0 +1,12 @@
+{
+  "form-schema-1.json": {
+    "step-1": {
+      "firstName": {
+        "width": 6
+      },
+      "lastName": {
+        "width": 6
+      }
+    }
+  }
+}

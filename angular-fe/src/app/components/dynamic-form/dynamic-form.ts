@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgStyle } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormStep, FormField } from '../../services/dynamic-form.service';
 import { Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, NgStyle, ReactiveFormsModule],
   templateUrl: './dynamic-form.html',
   styleUrl: './dynamic-form.css'
 })
@@ -28,11 +28,13 @@ export class DynamicFormComponent implements OnChanges, OnDestroy {
    */
   @Input() formGroup!: FormGroup;
 
-  /**
-   * Remote server-side validation error alerts received from the Mock Backend API,
-   * indexed by field ID mapping to error message details.
-   */
   @Input() backendErrors: { [key: string]: string } = {};
+
+  /**
+   * Layout specifications from layout.json for the active step.
+   * Key: fieldId, Value: { width: number }
+   */
+  @Input() layout: { [fieldId: string]: { width: number } } | null = null;
 
   /**
    * Emitted to the parent controller when a user modifies an input that has an uncleared backend error.
@@ -95,6 +97,36 @@ export class DynamicFormComponent implements OnChanges, OnDestroy {
   isRequired(field: FormField): boolean {
     if (!field.validations) return false;
     return field.validations.some(v => v.type === 'required' || v.type === 'requiredTrue');
+  }
+
+  /**
+   * Translates layout width (e.g. 6) into grid-column span properties.
+   * Defaults to 'span 12' (full width) if no layout configuration is found.
+   *
+   * @param field The target form field schema.
+   * @returns string CSS gridColumn property.
+   */
+  getFieldGridColumn(field: FormField): string {
+    if (this.layout && this.layout[field.id]) {
+      const width = this.layout[field.id].width;
+      return `span ${width}`;
+    }
+    return 'span 12';
+  }
+
+  /**
+   * Returns an ngStyle-compatible object for the grid-column of a field.
+   * Translates layout width (e.g. 6) into an explicit CSS grid-column span.
+   *
+   * @param field The target form field schema.
+   * @returns Record<string, string> ngStyle object.
+   */
+  getFieldGridStyle(field: FormField): Record<string, string> {
+    if (this.layout && this.layout[field.id]) {
+      const width = this.layout[field.id].width;
+      return { 'grid-column': `span ${width} / span ${width}` };
+    }
+    return { 'grid-column': 'span 12 / span 12' };
   }
 
   /**

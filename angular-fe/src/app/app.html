@@ -231,6 +231,7 @@
                   [step]="currentStep"
                   [formGroup]="currentStepGroup"
                   [backendErrors]="backendErrors[currentStep.id]"
+                  [layout]="currentStepLayout"
                   (clearBackendError)="onClearBackendError($event)"
                 ></app-dynamic-form>
               </div>

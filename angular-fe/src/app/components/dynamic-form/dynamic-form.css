@@ -1,8 +1,18 @@
 .dynamic-form-el {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
   gap: 1.5rem;
 }
+
+@media (max-width: 600px) {
+  .dynamic-form-el {
+    grid-template-columns: 1fr;
+  }
+  .form-group-item {
+    grid-column: span 1 / span 1 !important;
+  }
+}
+
 
 .form-group-item {
   display: flex;
